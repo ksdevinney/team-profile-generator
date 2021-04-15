@@ -3,8 +3,8 @@ const Engineer = require("../lib/engineer");
 // set GitHub username
 test("Can set GitHub via constructor argument", () => {
   const testValue = "hondaCivic";
-  const e = new Manager("Foo", 1, "test@test.com", testValue);
-  expect(e.gitHub.toBe(testValue));
+  const e = new Engineer("Foo", 1, "test@test.com", testValue);
+  expect(e.gitHub).toBe(testValue);
 });
 
 test("getRole() should return \"Engineer\"", () => {
