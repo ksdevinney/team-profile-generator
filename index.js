@@ -113,6 +113,37 @@ function createEngineer() {
         })
 }
 
+function createIntern() {
+    inquirer.prompt([
+        {
+            type: 'input',
+            message: 'Employee name?',
+            name: 'name',
+        },
+        {
+            type: 'input',
+            message: 'ID number?',
+            name: 'id',
+        },
+        {
+            type: 'input',
+            message: 'School?',
+            name: 'school',
+        },
+        {
+            type: 'input',
+            message: 'Email?',
+            name: 'email',
+        }
+    ])
+        .then(response => {
+            const newIntern = new Intern(response.name, response.id, response.email, response.school)
+            internList.push(newIntern);
+            console.log(internList);
+            startEmployee();
+        })
+}
+
 function createHtml() {
     const fileName = path.join(__dirname,`./dist/${teamName.toLowerCase().split(' ').join('')}.html`);
 
@@ -139,9 +170,9 @@ function createHtml() {
   <div class="card-body">
     <h5 class="card-title">${managerList[i].name}</h5>
     <h6 class="card-subtitle mb-2 text-muted">Manager</h6>
-    <p class="card-text">${managerList[i].id}</p>
-    <p class="card-text">${managerList[i].email}</p>
-    <p class="card-text">${managerList[i].officeNumber}</p>
+    <p class="card-text">Id: ${managerList[i].id}</p>
+    <p class="card-text">Email: ${managerList[i].email}</p>
+    <p class="card-text">Office Number: ${managerList[i].officeNumber}</p>
   </div>
 </div>
     `
@@ -153,9 +184,23 @@ function createHtml() {
   <div class="card-body">
     <h5 class="card-title">${engineerList[i].name}</h5>
     <h6 class="card-subtitle mb-2 text-muted">Engineer</h6>
-    <p class="card-text">${engineerList[i].id}</p>
-    <p class="card-text">${engineerList[i].email}</p>
-    <p class="card-text">${engineerList[i].gitHub}</p>
+    <p class="card-text">Id: ${engineerList[i].id}</p>
+    <p class="card-text">Email: ${engineerList[i].email}</p>
+    <p class="card-text">GitHub: ${engineerList[i].gitHub}</p>
+  </div>
+</div>
+    `
+    }
+    let internHtml = '';
+    for (let i = 0; i < internList.length; i++) {
+        internHtml += `
+    <div class="card" style="width: 18rem;">
+  <div class="card-body">
+    <h5 class="card-title">${internList[i].name}</h5>
+    <h6 class="card-subtitle mb-2 text-muted">Intern</h6>
+    <p class="card-text">Id: ${internList[i].id}</p>
+    <p class="card-text">Email: ${internList[i].email}</p>
+    <p class="card-text">School: ${internList[i].school}</p>
   </div>
 </div>
     `
@@ -164,7 +209,7 @@ function createHtml() {
 </body>
 </html>
 `
-    let html = newHtml + managerHtml + engineerHtml + closingHtml
+    let html = newHtml + managerHtml + engineerHtml + internHtml + closingHtml
     console.log(html);
     fs.writeFile(fileName, html, (err) =>
         err ? console.log(err) : console.log('Success!')
