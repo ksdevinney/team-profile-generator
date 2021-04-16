@@ -4,6 +4,7 @@ const Engineer = require('./lib/engineer');
 const Intern = require('./lib/intern');
 const Manager = require('./lib/manager');
 let teamName = ' ';
+const path = require("path")
 // empty array for input
 let team = [];
 let managerList = [];
@@ -81,8 +82,39 @@ function createManager() {
         })
 }
 
+function createEngineer() {
+    inquirer.prompt([
+        {
+            type: 'input',
+            message: 'Employee name?',
+            name: 'name',
+        },
+        {
+            type: 'input',
+            message: 'ID number?',
+            name: 'id',
+        },
+        {
+            type: 'input',
+            message: 'Github account?',
+            name: 'gitHub',
+        },
+        {
+            type: 'input',
+            message: 'Email?',
+            name: 'email',
+        }
+    ])
+        .then(response => {
+            const newEngineer = new Engineer(response.name, response.id, response.email, response.gitHub)
+            engineerList.push(newEngineer);
+            console.log(engineerList);
+            startEmployee();
+        })
+}
+
 function createHtml() {
-    const fileName = `${teamName.toLowerCase().split(' ').join('')}.html`;
+    const fileName = path.join(__dirname,`./dist/${teamName.toLowerCase().split(' ').join('')}.html`);
 
     let newHtml = `
     <!DOCTYPE html>
@@ -114,11 +146,25 @@ function createHtml() {
 </div>
     `
     }
+    let engineerHtml = '';
+    for (let i = 0; i < engineerList.length; i++) {
+        engineerHtml += `
+    <div class="card" style="width: 18rem;">
+  <div class="card-body">
+    <h5 class="card-title">${engineerList[i].name}</h5>
+    <h6 class="card-subtitle mb-2 text-muted">Engineer</h6>
+    <p class="card-text">${engineerList[i].id}</p>
+    <p class="card-text">${engineerList[i].email}</p>
+    <p class="card-text">${engineerList[i].gitHub}</p>
+  </div>
+</div>
+    `
+    }
     let closingHtml = `
 </body>
 </html>
 `
-    let html = newHtml + managerHtml + closingHtml
+    let html = newHtml + managerHtml + engineerHtml + closingHtml
     console.log(html);
     fs.writeFile(fileName, html, (err) =>
         err ? console.log(err) : console.log('Success!')
