@@ -1,9 +1,29 @@
-h1 {
-    text-align: center;
+body {
+    font-family:Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
 }
 
 header {
     padding: 25px;
     margin: 25px;
-    background-color: aqua;
+    background-color: #105635;
+}
+
+.card {
+    padding: 30px;
+    margin: 20px;
+    border-radius: 25px;
+    border: 2 rem;
+    border-color: black;
+}
+
+#intern-name {
+    background-color: #809fff;
+}
+
+#manager-name {
+    background-color: #ffe680;
+}
+
+#engineer-name {
+    background-color: #E36685;
 }
