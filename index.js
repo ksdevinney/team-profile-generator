@@ -6,7 +6,7 @@ const Manager = require('./lib/manager');
 let teamName = ' ';
 const path = require("path")
 // empty array for input
-let team = [];
+// let team = [];
 let managerList = [];
 let engineerList = [];
 let internList = [];
@@ -22,6 +22,7 @@ inquirer.prompt([
         startEmployee()
     });
 
+// initial choice
 function startEmployee() {
     inquirer.prompt([
         {
@@ -32,6 +33,7 @@ function startEmployee() {
         },
     ])
 
+        // switch cases for roles
         .then((response) => {
             switch (response.role) {
                 case 'Manager':
@@ -51,6 +53,7 @@ function startEmployee() {
 
 };
 
+// Manager questions
 function createManager() {
     inquirer.prompt([
         {
@@ -77,11 +80,11 @@ function createManager() {
         .then(response => {
             const newManager = new Manager(response.name, response.id, response.email, response.officeNumber)
             managerList.push(newManager);
-            console.log(managerList);
             startEmployee();
         })
 }
 
+// Engineer questions
 function createEngineer() {
     inquirer.prompt([
         {
@@ -108,11 +111,10 @@ function createEngineer() {
         .then(response => {
             const newEngineer = new Engineer(response.name, response.id, response.email, response.gitHub)
             engineerList.push(newEngineer);
-            console.log(engineerList);
             startEmployee();
         })
 }
-
+// Intern questions
 function createIntern() {
     inquirer.prompt([
         {
@@ -139,13 +141,13 @@ function createIntern() {
         .then(response => {
             const newIntern = new Intern(response.name, response.id, response.email, response.school)
             internList.push(newIntern);
-            console.log(internList);
             startEmployee();
         })
 }
 
+// creates html file after exit
 function createHtml() {
-    const fileName = path.join(__dirname,`./dist/${teamName.toLowerCase().split(' ').join('')}.html`);
+    const fileName = path.join(__dirname, `./dist/${teamName.toLowerCase().split(' ').join('')}.html`);
 
     let newHtml = `
     <!DOCTYPE html>
@@ -156,12 +158,18 @@ function createHtml() {
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>My Team</title>
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6" crossorigin="anonymous">
+        <script src="https://kit.fontawesome.com/4efd53b931.js" crossorigin="anonymous"></script>
         <link href="dist/style.css">
     </head>
     <body>
         <header>
-            <h1>My Team ${teamName}</h1>
+        <nav class="navbar navbar-expand-lg navbar-light bg-success">
+        <div class="container-md">
+          <a class="navbar-brand">Team ${teamName}</a>
+        </div>
+        </nav>
         </header>  
+        <div class ="row">
         `;
     let managerHtml = '';
     for (let i = 0; i < managerList.length; i++) {
@@ -169,9 +177,9 @@ function createHtml() {
     <div class="card" style="width: 18rem;">
   <div class="card-body">
     <h5 class="card-title">${managerList[i].name}</h5>
-    <h6 class="card-subtitle mb-2 text-muted">Manager</h6>
+    <h6 class="card-header mb-2 text-muted"><i class="far fa-star"></i> Manager</h6>
     <p class="card-text">Id: ${managerList[i].id}</p>
-    <p class="card-text">Email: ${managerList[i].email}</p>
+    <p class="card-text">Email: <a href="mailto:${managerList[i].email}"> ${managerList[i].email}</a></p>
     <p class="card-text">Office Number: ${managerList[i].officeNumber}</p>
   </div>
 </div>
@@ -183,10 +191,10 @@ function createHtml() {
     <div class="card" style="width: 18rem;">
   <div class="card-body">
     <h5 class="card-title">${engineerList[i].name}</h5>
-    <h6 class="card-subtitle mb-2 text-muted">Engineer</h6>
+    <h6 class="card-header mb-2 text-muted"><i class="far fa-folder"></i> Engineer</h6>
     <p class="card-text">Id: ${engineerList[i].id}</p>
-    <p class="card-text">Email: ${engineerList[i].email}</p>
-    <p class="card-text">GitHub: ${engineerList[i].gitHub}</p>
+    <p class="card-text">Email: <a href="mailto:${engineerList[i].email}">${engineerList[i].email}</a></p>
+    <p class="card-text">GitHub: <a href="https://github.com/${engineerList[i].gitHub}" target="_blank">${engineerList[i].gitHub}</a></p>
   </div>
 </div>
     `
@@ -197,20 +205,21 @@ function createHtml() {
     <div class="card" style="width: 18rem;">
   <div class="card-body">
     <h5 class="card-title">${internList[i].name}</h5>
-    <h6 class="card-subtitle mb-2 text-muted">Intern</h6>
+    <h6 class="card-header mb-2 text-muted"><i class="far fa-bookmark"></i> Intern</h6>
     <p class="card-text">Id: ${internList[i].id}</p>
-    <p class="card-text">Email: ${internList[i].email}</p>
+    <p class="card-text">Email: <a href="mailto:${internList[i].email}">${internList[i].email}</a></p>
     <p class="card-text">School: ${internList[i].school}</p>
   </div>
 </div>
     `
     }
     let closingHtml = `
+</div>
 </body>
 </html>
 `
+    // concatenate html elements
     let html = newHtml + managerHtml + engineerHtml + internHtml + closingHtml
-    console.log(html);
     fs.writeFile(fileName, html, (err) =>
         err ? console.log(err) : console.log('Success!')
     );
