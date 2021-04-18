@@ -10,6 +10,8 @@ This is a command-line application that generates a webpage to display a team ro
 
 The application was developed using JavaScript and uses Node to run. It uses concepts of object-oriented programming; specifically, the use of classes to create different employee roles. Classes are constructed in seperate JavaScript files. An "employee" class is extended for the role of manager, engineer, and intern. Each class has its own seperate HTML output, which is then pieced together in the output file. Bootstrap and CSS have been used to style the HTML. 
 
+[An example of an HTML file created using the application](https://github.com/ksdevinney/team-profile-generator/blob/main/dist/seniorstaff.html)
+
 ## How to Use
 
 First, the user must use 
